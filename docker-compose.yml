@@ -1,0 +1,40 @@
+version: "3.7"
+
+services:
+  mysql:
+    image: mysql:5.6
+    container_name: wellbe_waiter_mysql
+    ports:
+      - 3306:3306
+    volumes:
+      - /mysql/data:/var/lib/mysql
+    restart: on-failure
+    environment:
+      - MYSQL_ALLOW_EMPTY_PASSWORD=yes
+      - MYSQL_DATABASE=wellbe_waiter
+      - MYSQL_USER=root
+    network_mode: 'host'
+
+  waiter_server:
+    image: node:8.16.0-alpine
+    container_name: wellbe_waiter_server
+    ports: 
+      - 3000:3000
+    volumes: 
+      - ./repositories/virtual-waiter-backend:/app
+    depends_on:
+      - mysql
+    working_dir: /app
+    command: npm start
+    network_mode: 'host'
+
+  waiter_frontend:
+    image: node:10-alpine
+    container_name: wellbe_waiter_frontend
+    ports: 
+      - 3002:3002
+    volumes: 
+      - ./repositories/virtual-waiter:/app
+    working_dir: /app
+    command: npm start
+    network_mode: 'host'
