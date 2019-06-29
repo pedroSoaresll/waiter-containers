@@ -16,12 +16,13 @@ services:
     network_mode: 'host'
 
   waiter_server:
-    image: node:8.16.0-alpine
+    build: ./repositories/virtual-waiter-backend
     container_name: wellbe_waiter_server
     ports: 
       - 3000:3000
     volumes: 
       - ./repositories/virtual-waiter-backend:/app
+      - /app/node_modules
     depends_on:
       - mysql
     working_dir: /app
@@ -29,12 +30,12 @@ services:
     network_mode: 'host'
 
   waiter_frontend:
-    image: node:10-alpine
+    build: ./repositories/virtual-waiter
     container_name: wellbe_waiter_frontend
     ports: 
-      - 3002:3002
+      - 3002:80
     volumes: 
       - ./repositories/virtual-waiter:/app
+      - /app/node_modules
     working_dir: /app
     command: npm start
-    network_mode: 'host'
