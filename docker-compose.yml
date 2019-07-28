@@ -13,32 +13,31 @@ services:
       - MYSQL_ALLOW_EMPTY_PASSWORD=yes
       - MYSQL_DATABASE=wellbe_waiter
       - MYSQL_USER=root
-    network_mode: 'bridge'
+    network_mode: 'host'
 
   waiter_server:
-    build: ./repositories/virtual-waiter-backend
+    build: ./repositories/waiter-api
     container_name: wellbe_waiter_server
     ports: 
       - 3000:3000
     volumes: 
-      - ./repositories/virtual-waiter-backend:/app
+      - ./repositories/waiter-api:/app
       - /app/node_modules
     depends_on:
       - mysql
-    links:
-      - mysql
     working_dir: /app
     command: npm start
-    network_mode: 'bridge'
+    network_mode: 'host'
 
   waiter_frontend:
-    build: ./repositories/virtual-waiter
-    container_name: wellbe_waiter_frontend
-    stdin_open: true
-    tty: true
-    ports: 
-      - 3002:80
-    volumes: 
-      - ./repositories/virtual-waiter:/app/:ro
+    build: 
+      context: ./repositories/waiter-client
+      target: develop-stage
+    container_name: wellbe_waiter_client
+    ports:
+      - '8080:80'
+    volumes:
+      - './repositories/waiter-client:/app'
       - /app/node_modules
-    network_mode: 'bridge'
+    command: /bin/sh -c "npm run serve"
+    network_mode: 'host'
