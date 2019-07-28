@@ -1,5 +1,4 @@
 #!/bin/bash
 
-git clone git@gitlab.com:pedroSoaresll/virtual-waiter-backend.git
-git clone git@gitlab.com:pedroSoaresll/virtual-waiter.git
-git clone git@gitlab.com:pedroSoaresll/virtual-waiter-admin-frontend.git
+git clone git@github.com:pedroSoaresll/waiter-client.gitt
+git clone git@github.com:pedroSoaresll/waiter-api.git
