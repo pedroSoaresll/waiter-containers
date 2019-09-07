@@ -22,22 +22,9 @@ services:
       - 3000:3000
     volumes: 
       - ./repositories/waiter-api:/app
-      - /app/node_modules
+      - ./repositories/waiter-api/node_modules:/app/node_modules
     depends_on:
       - mysql
     working_dir: /app
     command: npm start
-    network_mode: 'host'
-
-  waiter_frontend:
-    build: 
-      context: ./repositories/waiter-client
-      target: develop-stage
-    container_name: wellbe_waiter_client
-    ports:
-      - '8080:80'
-    volumes:
-      - './repositories/waiter-client:/app'
-      - /app/node_modules
-    command: /bin/sh -c "npm run serve"
     network_mode: 'host'
