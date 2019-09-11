@@ -18,13 +18,22 @@ services:
   waiter_server:
     build: ./repositories/waiter-api
     container_name: wellbe_waiter_server
-    ports: 
+    ports:
       - 3000:3000
-    volumes: 
+    volumes:
       - ./repositories/waiter-api:/app
       - ./repositories/waiter-api/node_modules:/app/node_modules
     depends_on:
       - mysql
+      - waiter_sqs
     working_dir: /app
     command: npm start
+    network_mode: 'host'
+
+  waiter_sqs:
+    image: roribio16/alpine-sqs
+    container_name: wellbe_waiter_sqs
+    ports:
+      - 9324:9324
+      - 9325:9325
     network_mode: 'host'
